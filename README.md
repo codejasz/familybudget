@@ -12,5 +12,5 @@ App which allows you and your family to control your common incomes and expenses
 ### Application features
 
 ### Tech stack
-⋅⋅* Django 4.1
-..* Postgres
+* Django 4.1
+* Postgres
