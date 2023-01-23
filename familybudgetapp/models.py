@@ -1,7 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import User
-from .managers import BudgetManager
+from django.db import models
+
 from .constants import TRANSACTION_CHOICES
+from .managers import BudgetManager
+
 
 class Budget(models.Model):
     name = models.CharField(max_length=30, blank=False, null=False)
@@ -9,12 +11,8 @@ class Budget(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')
     objects = BudgetManager()
 
-    def get_balance(self) -> int:
-        balance = BudgetManager.calculate_balance(self)
-        return balance
-
-    def __str__(self) -> str:
-        return f'{self.get_balance():.2f}'
+    # def __str__(self) -> str:
+    #     return f'{self.get_balance():.2f}'
 
 
 class Category(models.Model):
@@ -29,14 +27,20 @@ class Category(models.Model):
 
 class Transaction(models.Model):
     description = models.CharField(max_length=255, blank=False, null=False)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_type = models.CharField(max_length=2, blank=False, null=False, choices=TRANSACTION_CHOICES)
+    amount = models.IntegerField()
+    transaction_type = models.CharField(
+        max_length=2, blank=False, null=False, choices=TRANSACTION_CHOICES
+    )
     created_at = models.DateField(auto_now_add=True)
-    categories = models.ManyToManyField(Category)
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='transactions')
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name='category'
+    )
+    budget = models.ForeignKey(
+        Budget, on_delete=models.CASCADE, related_name='transactions'
+    )
 
     def __str__(self) -> str:
-        return f'{self.transaction_type} - {self.description}: {self.amount}'
+        return f'{self.transaction_type} - {self.description}: {self.amount:.2f}'
 
 
 class Shared(models.Model):
