@@ -8,7 +8,7 @@ from .views import BudgetViewSet, TransactionViewSet
 
 router = DefaultRouter()
 router.register('transactions', TransactionViewSet)
-router.register('budgets', BudgetViewSet)
+router.register('budgets', BudgetViewSet, basename='budget')
 
 urlpatterns = [
     path('', include(router.urls)),
