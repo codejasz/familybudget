@@ -10,43 +10,45 @@ class TestBudgetModel(APITestCase):
     def setUp(self):
         self.owner = UserFactory()
         self.budget = BudgetFactory(owner=self.owner)
+        self.category1 = CategoryFactory()
+        self.category2 = CategoryFactory()
 
         # create incomes with total of 100
         TransactionFactory(
             budget=self.budget,
-            description='test1',
             amount=10,
-            transaction_type='IN',
-            category=CategoryFactory(name='CAT1'),
+            transaction_type=INCOME,
+            category=self.category1,
         )
         TransactionFactory(
             budget=self.budget,
-            description='test2',
             amount=30,
-            transaction_type='IN',
-            category=CategoryFactory(name='CAT1'),
+            transaction_type=INCOME,
+            category=self.category1,
         )
         TransactionFactory(
-            budget=self.budget, description='test3', amount=60, transaction_type=INCOME
+            budget=self.budget,
+            amount=60,
+            transaction_type=INCOME
         )
 
         # create expenses with total of 60
         TransactionFactory(
             budget=self.budget,
-            description='test1',
             amount=10,
-            transaction_type='EX',
-            category=CategoryFactory(name='CAT2'),
+            transaction_type=EXPENSE,
+            category=self.category2,
         )
         TransactionFactory(
             budget=self.budget,
-            description='test2',
             amount=20,
-            transaction_type='EX',
-            category=CategoryFactory(name='CAT2'),
+            transaction_type=EXPENSE,
+            category=self.category2,
         )
         TransactionFactory(
-            budget=self.budget, description='test3', amount=30, transaction_type=EXPENSE
+            budget=self.budget,
+            amount=30,
+            transaction_type=EXPENSE
         )
 
     def test_incomes_sum(self):
@@ -59,11 +61,7 @@ class TestBudgetModel(APITestCase):
         self.assertEqual(BudgetManager.calculate_balance(self.budget), 40)
 
     def test_incomes_by_category(self):
-        self.assertEqual(BudgetManager.calculate_balance_by_category(self.budget, category='CAT1'), 40)
+        self.assertEqual(BudgetManager.calculate_balance_by_category(self.budget, category=self.category1.name), 40)
 
     def test_expenses_by_category(self):
-        self.assertEqual(BudgetManager.calculate_balance_by_category(self.budget, category='CAT2'), 30)
-
-# class TestBudgetPermision(APITestCase):
-#     def setUp(self):
-#         self.owner = UserFactory()
+        self.assertEqual(BudgetManager.calculate_balance_by_category(self.budget, category=self.category2.name), 30)
