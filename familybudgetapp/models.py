@@ -11,8 +11,8 @@ class Budget(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')
     objects = BudgetManager()
 
-    # def __str__(self) -> str:
-    #     return f'{self.get_balance():.2f}'
+    def __str__(self) -> str:
+        return f'{self.name} - {self.owner}'
 
 
 class Category(models.Model):
@@ -45,4 +45,4 @@ class Transaction(models.Model):
 
 class Shared(models.Model):
     shared_with = models.ForeignKey(User, on_delete=models.CASCADE)
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='shared_with')
