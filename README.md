@@ -78,7 +78,7 @@ curl -X POST \
   http://127.0.0.1:8000/budgets/ \
   -H 'Authorization: Token b1199ee92738ede753e523f530a0440076a4d41a' \
   -H 'content-type: application/json' \
-  --data-raw $'{\n    "name": "Budget example",\n    "owner": 4,    \n"description": "budget",\n    "transactions": [],\n    "shared_with": []\n}'
+  --data-raw $'{\n    "name": "Budget example",\n    "owner": 2,    \n"description": "budget",\n    "transactions": [],\n    "shared_with": []\n}'
 ```
 
 Response
@@ -87,7 +87,7 @@ Response
 {
     "description": "budget",
     "name": "Budget example",
-    "owner": 4,
+    "owner": 2,
     "shared_with":
         [],
     "transactions":
@@ -102,8 +102,8 @@ List users budgets together with budgets to which the user is entitled
 Request
 
 ```bash
-curl -X POST \
-  http://127.0.0.1:8000/transactions/ \
+curl -X GET \
+  http://127.0.0.1:8000/budgets/ \
   -H 'Authorization: Token b1199ee92738ede753e523f530a0440076a4d41a' \
   -H 'content-type: application/json'
 ```
@@ -115,7 +115,7 @@ Response
     {
         "description": null,
         "name": "Savings",
-        "owner": 4,
+        "owner": 2,
         "shared_with":
         	[],
         "transactions":
