@@ -16,6 +16,7 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./src:/usr/src/family_budget
+      - ./example_data:/usr/src/family_budget/example_data
     ports:
       - 8000:8000
     environment:
