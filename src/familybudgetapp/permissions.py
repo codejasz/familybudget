@@ -8,8 +8,6 @@ class IsOwnerOrIsPermitted(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated:
-            return False
         if obj.shared_with.filter(shared_with_id=request.user.id).exists():
             return True
         return obj.owner == request.user
